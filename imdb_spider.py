@@ -41,6 +41,11 @@ class imdbSpider(scrapy.Spider):
             item['desc'] = sel.xpath('p[@itemprop = "description"]/text()').extract()
             item['director'] = sel.xpath('div[@itemprop = "director"]/a/span/text()').extract()
             item['stars'] = sel.xpath('div[@itemprop = "actors"]/a/span/text()').extract()
+            item['plot_keywords'] = response.xpath('//div[@id = "titleStoryLine"]/div[@class = "see-more inline canwrap"]/a/span/text()').extract()
+            """item['budget'] = filter(str.isdigit, response.xpath('//div[@id = "titleDetails"]/div[@class = "txt-block"]/text()').extract()[23].encode('utf-8'))
+            item['gross'] = filter(str.isdigit, response.xpath('//div[@id = "titleDetails"]/div[@class = "txt-block"]/text()').extract()[29].encode('utf-8'))
+            item['opening_weekend'] = filter(str.isdigit, response.xpath('//div[@id = "titleDetails"]/div[@class = "txt-block"]/text()').extract()[26].encode('utf-8'))"""
+            item['studios'] = response.xpath('//div[@id = "titleDetails"]/div[@class = "txt-block"]/span[@itemprop = "creator"]/a/span/text()').extract()
             indexes1.insert_one(item) 
         
         links = response.xpath('//div[@class = "rec_page"]/div[@class = "rec_item"]/a/@href').extract()
